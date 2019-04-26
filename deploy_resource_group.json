@@ -1,0 +1,26 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.1",
+    "parameters": {
+        "parRgName": {
+            "type": "string"
+        },
+        "parLocation": {
+            "type": "string"
+        },
+        "parTags": {
+            "type": "object"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Resources/resourceGroups",
+            "apiVersion": "2018-05-01",
+            "location": "[parameters('parLocation')]",
+            "name": "[parameters('parRgName')]",
+            "tags": "[parameters('parTags')]"
+        }
+    ],
+    "outputs": {}
+}

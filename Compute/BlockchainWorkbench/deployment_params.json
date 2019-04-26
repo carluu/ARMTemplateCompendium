@@ -1,0 +1,42 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "eastus"
+        },
+        "pocName": {
+            "value": "sinaia"
+        },
+        "username": {
+            "value": "sinaia"
+        },
+        "authType": {
+            "value": "sshPublicKey"
+        },
+        "sshPublicKey": {
+            "value": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCmda/R44yCQD6BmuMTdrMdinT23PzJhdGRmjIG2nYE3L34otviSOTw1klZXoySgJNOMj9AFbEDpa4JnRF5FUdEFS6crahzEmmlkAt5ypveYza7GejdDjogu1krCqR+gJ0+9Ddf0bd/dtYsiNGQ835wD/EICGhFMlSea0BZbbMEDxHFXhQhhP36ViG8elJp4peurHfVogVbwaZEB62CIOSv5qqSi9mRc8pkpsR3j516xGhLPlEtecnSRaZjI6IKix45BDWpSx6Y9CIzVPcDtt5p1i7Ca5GY6LnYCvFcmcMs+ZQYLtlgDYjH3t/ZWqae7qqmMfy3XMxngloKQwQb0MZB"
+        },
+        "databasePassword": {
+            "value": null
+        },
+        "deploymentGeolocation": {
+            "value": "eastus"
+        },
+        "vmSize": {
+            "value": "Standard_DS1_v2"
+        },
+        "vmStorageAccountType": {
+            "value": "StandardSSD_LRS"
+        },
+        "omsDeploy": {
+            "value": true
+        },
+        "AADTenantDomainName": {
+            "value": "cuussalugmail.onmicrosoft.com"
+        },
+        "AADBlockchainClientAppRegistrationApplicationId": {
+            "value": "2376b258-3999-458a-879a-52b1f5535ba3"
+        }
+    }
+}
