@@ -1,0 +1,15 @@
+# Get VM sizes
+az vm list-sizes -l "canadacentral" -o table
+
+# Get VM SKUs (similar to sizes but incorporates sub level restrictions and adds more detail)
+az vm list-skus -l "canadacentral" -o table
+
+# Get VM SKUs of certain series
+az vm list-skus -l "canadacentral" --query "[?contains(name,'_D')]" -o table
+az vm list-skus -l "canadacentral" --query "[?name=='Standard_M8ms']" -o table
+
+# List images
+az vm image list --publisher "Windows"
+
+
+

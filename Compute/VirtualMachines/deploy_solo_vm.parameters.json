@@ -1,0 +1,27 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "parRgName": {
+            "value": "## TO BE DEFINED ##"
+        },
+        "parLocation": {
+            "value": "## TO BE DEFINED ##"
+        },
+        "parTags": {
+            "value": "## TO BE DEFINED ##"
+        },
+        "parVmSize": {
+            "value": "## TO BE DEFINED ##"
+        },
+        "parImagePublisher": {
+            "value": "## TO BE DEFINED ##"
+        },
+        "parImageOffer": {
+            "value": "## TO BE DEFINED ##"
+        },
+        "parImageSku": {
+            "value": "## TO BE DEFINED ##"
+        }
+    }
+}

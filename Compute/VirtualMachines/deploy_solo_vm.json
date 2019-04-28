@@ -1,0 +1,121 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "parRgName": {
+            "type": "string"
+        },
+        "parLocation": {
+            "type": "string"
+        },
+        "parTags": {
+            "type": "object"
+        },
+        "parVmSize": {
+            "type": "string"
+        },
+        "parWinOrLinux": {
+            "type": "string",
+            "allowedValues": ["Windows","Linux"]
+        }
+        "parUsername": {
+            "type": "string"
+        },
+        "parPasswordSsh": {
+            "type": "securestring"
+        }
+    },
+    "variables": {
+        "varLinuxImagePublisher": "Canonical",
+        "varLinuxImageOffer": "UbuntuServer",
+        "varLinuxImageSku": "18.04-LTS",
+        "varLinuxImageVersion": "latest",
+        "varWindowsImagePublisher": "MicrosoftWindowsServer",
+        "varWindowsImageOffer": "WindowsServer",
+        "varWindowsImageSku": "2019-Datacenter",
+        "varWindowsImageVersion": "latest",
+        "varVmName": "myVm"
+    },
+    "resources": [
+        {
+            "name": "string",
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2019-03-01",
+            "location": "[parameters('parLocation')]",
+            "tags": "[parameters('parTags')]",
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "[parameters('parVmSize')]"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "[if(equals(parameters('parWinOrLinux'), 'Windows'), variables('varWindowsImagePublisher'), variables('varLinuxImagePublisher'))]",
+                        "offer": "[if(equals(parameters('parWinOrLinux'), 'Windows'), variables('varWindowsImageOffer'), variables('varLinuxImageOffer'))]",
+                        "sku": "[if(equals(parameters('parWinOrLinux'), 'Windows'), variables('varWindowsImageSku'), variables('varLinuxImageSku'))]",
+                        "version": "[if(equals(parameters('parWinOrLinux'), 'Windows'), variables('varWindowsImageVersion'), variables('varLinuxImageVersion'))]"
+                    },
+                    "osDisk": {
+                        "osType": "parameters('parWinOrLinux')",
+                        "createOption": "FromImage"
+                    },
+                    "dataDisks": [
+                    ]
+                },
+                "osProfile": {
+                    "computerName": "variables('varVmName')",
+                    "adminUsername": "parameters('parUsername')",
+                    "adminPassword": "[if(equals(parameters('parWinOrLinux'), 'Windows'), parameters('parPasswordSsh'), json('null'))]",
+                    "windowsConfiguration": {
+                        "condition": "[equals(parameters('parWinOrLinux'),'Windows')]",
+                        "provisionVMAgent": true,
+                        "enableAutomaticUpdates": true
+                    },
+                    "linuxConfiguration": {
+                        "condition": "[equals(parameters('parWinOrLinux'),'Linux')]",
+                        "disablePasswordAuthentication": true,
+                        "ssh": {
+                            "publicKeys": [
+                                {
+                                    "keyData": "parameters('parPasswordSsh')"
+                                }
+                            ]
+                        },
+                        "provisionVMAgent": true
+                    },
+                    "secrets": [
+                    ],
+                    "allowExtensionOperations": true
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "string",
+                            "properties": {
+                                "primary": true
+                            }
+                        }
+                    ]
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": true,
+                        "storageUri": "string"
+                    }
+                },
+                "availabilitySet": {
+                    "id": "string"
+                },
+                "licenseType": "string"
+            },
+            "identity": {
+                "type": "string",
+                "userAssignedIdentities": {}
+            },
+            "zones": [
+                "string"
+            ],
+            "resources": []
+        }
+    ],
+    "outputs": {}
+}
