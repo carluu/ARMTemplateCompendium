@@ -34,7 +34,22 @@
         "varWindowsImageOffer": "WindowsServer",
         "varWindowsImageSku": "2019-Datacenter",
         "varWindowsImageVersion": "latest",
-        "varVmName": "myVm"
+        "varVmName": "myVm",
+        "varWindowsConfig": {
+            "provisionVMAgent": true,
+            "enableAutomaticUpdates": true
+        },
+        "varLinuxConfig" : {
+            "disablePasswordAuthentication": true,
+            "ssh": {
+                "publicKeys": [
+                    {
+                        "keyData": "parameters('parPasswordSsh')"
+                    }
+                ]
+            },
+            "provisionVMAgent": true
+        }
     },
     "resources": [
         {
@@ -65,23 +80,8 @@
                     "computerName": "variables('varVmName')",
                     "adminUsername": "parameters('parUsername')",
                     "adminPassword": "[if(equals(parameters('parWinOrLinux'), 'Windows'), parameters('parPasswordSsh'), json('null'))]",
-                    "windowsConfiguration": {
-                        "condition": "[equals(parameters('parWinOrLinux'),'Windows')]",
-                        "provisionVMAgent": true,
-                        "enableAutomaticUpdates": true
-                    },
-                    "linuxConfiguration": {
-                        "condition": "[equals(parameters('parWinOrLinux'),'Linux')]",
-                        "disablePasswordAuthentication": true,
-                        "ssh": {
-                            "publicKeys": [
-                                {
-                                    "keyData": "parameters('parPasswordSsh')"
-                                }
-                            ]
-                        },
-                        "provisionVMAgent": true
-                    },
+                    "windowsConfiguration": "[if(equals(parameters('parWinOrLinux'), 'Windows'), variables('varWindowsConfig'), json('null'))]",
+                    "linuxConfiguration": "[if(equals(parameters('parWinOrLinux'), 'Linux'), variables('varLinuxConfig'), json('null'))]",
                     "secrets": [
                     ],
                     "allowExtensionOperations": true
