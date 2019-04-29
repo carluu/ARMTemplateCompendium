@@ -1,0 +1,5 @@
+# Deploy a resource group or other resource at sub level
+az deployment create --location <location> --template-file deploy_resource_group.json --parameters @deploy_resource_group.parameters.local.json 
+
+# Deploy a resouece into a resource group
+az group deployment create --resource-group <rg> --template-file deploy_<resource>.json --parameters @deploy_<resource>.parameters.local.json

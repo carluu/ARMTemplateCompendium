@@ -2,11 +2,8 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "parLocation": {
-            "value": "canadacentral"
-        },
         "parRgName": {
-            "value": "GeneralRG"
+            "value": "Value"
         },
         "parTags": {
             "value": {"Tag1": "Tag1", "Tag2": "Tag2", "Tag3": "Tag3" }
