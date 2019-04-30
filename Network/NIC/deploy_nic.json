@@ -1,0 +1,43 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "parTags": {
+            "type": "object"
+        },
+        "parSubnetId": {
+            "type": "string"
+        }
+    },
+    "variables": {
+        "varNicName": "testNic"
+    },
+    "resources": [
+        {
+            "name": "[variables('varNicName')]",
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2018-11-01",
+            "location": "[resourceGroup().location]",
+            "tags": "[parameters('parTags')]",
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "properties": {
+                            "privateIPAllocationMethod": "Dynamic",
+                            "privateIPAddressVersion": "IPv4",
+                            "subnet": {
+                                "id": "[parameters('parSubnetId')]"
+                            },
+                            "primary": true
+                        },
+                        "name": "[concat(variables('varNicName'),'-ipconfig')]"
+                    }
+                ],
+                "primary": true,
+                "enableAcceleratedNetworking": true,
+                "enableIPForwarding": false
+            },
+            "resources": []
+        }
+    ]
+}
