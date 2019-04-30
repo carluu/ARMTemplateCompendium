@@ -3,8 +3,8 @@
 ## Folder Structure
 
 The structure is broken down as follows:
-Level 1: Resource Provider
-Level 2: Resource Type
+- Level 1: Resource Provider
+- Level 2: Resource Type
 
 Within a resource type, there are the following folders:
 - reference
