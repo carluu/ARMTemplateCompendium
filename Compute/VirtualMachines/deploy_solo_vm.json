@@ -2,9 +2,6 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "parRgName": {
-            "type": "string"
-        },
         "parTags": {
             "type": "object"
         },
@@ -13,13 +10,22 @@
         },
         "parWinOrLinux": {
             "type": "string",
-            "allowedValues": ["Windows","Linux"]
-        }
+            "allowedValues": [
+                "Windows",
+                "Linux"
+            ]
+        },
         "parUsername": {
             "type": "string"
         },
         "parPasswordSsh": {
             "type": "securestring"
+        },
+        "parSubnetName": {
+            "type": "string"
+        },
+        "parVnetName": {
+            "type": "string"
         }
     },
     "variables": {
@@ -36,7 +42,7 @@
             "provisionVMAgent": true,
             "enableAutomaticUpdates": true
         },
-        "varLinuxConfig" : {
+        "varLinuxConfig": {
             "disablePasswordAuthentication": true,
             "ssh": {
                 "publicKeys": [
@@ -50,7 +56,7 @@
     },
     "resources": [
         {
-            "name": "string",
+            "name": "[variables('varVmName')]",
             "type": "Microsoft.Compute/virtualMachines",
             "apiVersion": "2019-03-01",
             "location": "[resourceGroup().location]",
@@ -67,50 +73,60 @@
                         "version": "[if(equals(parameters('parWinOrLinux'), 'Windows'), variables('varWindowsImageVersion'), variables('varLinuxImageVersion'))]"
                     },
                     "osDisk": {
-                        "osType": "parameters('parWinOrLinux')",
+                        "osType": "[parameters('parWinOrLinux')]",
                         "createOption": "FromImage"
                     },
-                    "dataDisks": [
-                    ]
+                    "dataDisks": []
                 },
                 "osProfile": {
-                    "computerName": "variables('varVmName')",
-                    "adminUsername": "parameters('parUsername')",
+                    "computerName": "[variables('varVmName')]",
+                    "adminUsername": "[parameters('parUsername')]",
                     "adminPassword": "[if(equals(parameters('parWinOrLinux'), 'Windows'), parameters('parPasswordSsh'), json('null'))]",
                     "windowsConfiguration": "[if(equals(parameters('parWinOrLinux'), 'Windows'), variables('varWindowsConfig'), json('null'))]",
                     "linuxConfiguration": "[if(equals(parameters('parWinOrLinux'), 'Linux'), variables('varLinuxConfig'), json('null'))]",
-                    "secrets": [
-                    ],
+                    "secrets": [],
                     "allowExtensionOperations": true
                 },
                 "networkProfile": {
                     "networkInterfaces": [
                         {
-                            "id": "string",
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces',concat(variables('varVmName'),'-nic'))]",
                             "properties": {
                                 "primary": true
                             }
                         }
                     ]
-                },
-                "diagnosticsProfile": {
-                    "bootDiagnostics": {
-                        "enabled": true,
-                        "storageUri": "string"
-                    }
-                },
-                "availabilitySet": {
-                    "id": "string"
-                },
-                "licenseType": "string"
+                }
             },
-            "identity": {
-                "type": "string",
-                "userAssignedIdentities": {}
-            },
-            "zones": [
-                "string"
+            "dependsOn": [
+                "[concat(variables('varVmName'),'-nic')]"
             ],
+            "resources": []
+        },
+        {
+            "name": "[concat(variables('varVmName'),'-nic')]",
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2018-11-01",
+            "location": "[resourceGroup().location]",
+            "tags": "[parameters('parTags')]",
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "properties": {
+                            "privateIPAllocationMethod": "Dynamic",
+                            "privateIPAddressVersion": "IPv4",
+                            "subnet": {
+                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets',parameters('parVnetName'),parameters('parSubnetName'))]"
+                            },
+                            "primary": true
+                        },
+                        "name": "[concat(variables('varVmName'),'-nic-ipconfig')]"
+                    }
+                ],
+                "primary": true,
+                "enableAcceleratedNetworking": false,
+                "enableIPForwarding": false
+            },
             "resources": []
         }
     ],
