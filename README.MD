@@ -17,3 +17,9 @@ The resource type folder also contains:
 - deploy_xxx.json - This is the ARM template that deploys resources as per the file name
 - deploy_xxx.parameters.json - The parameters file template
 - deploy_xxx.paramaters.local.json - Should be used to actually store your parameters to avoid checking anything private into source control (ignored by Git)
+
+Completed Resources:
+- Resource Group
+- Vnet w/ Subnet
+- NIC
+- VM (Windows or Linux based on parameter) with a NIC attached
